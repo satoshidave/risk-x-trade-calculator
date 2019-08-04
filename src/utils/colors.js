@@ -6,6 +6,7 @@ const LIPSTICK_RED = "#BA192F";
 const VIOLET_BLUE = "#7100D9";
 const WHITE = "#FFFFFF";
 const BLACK = "#000000";
+const PALE_GREY = "#D6D6DF";
 
 export {
   ALMOST_BLACK,
@@ -16,4 +17,5 @@ export {
   VIOLET_BLUE,
   WHITE,
   BLACK,
+  PALE_GREY,
 }

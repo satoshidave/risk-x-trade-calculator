@@ -19,7 +19,7 @@ const CardContainer = styled.div`
 
 const CardHeaderContainer = styled.div`
   background-color: ${ DARK_GREY_1 };
-  height: 3.5rem;
+  height: 4rem;
   border-radius: 0.4rem 0.4rem 0 0;
   padding: 0.9rem;
 `

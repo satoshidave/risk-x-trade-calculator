@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { WHITE } from '../../../utils/colors';
 
-const Text = styled.span`
+const TextWrapper = styled.span`
   font-size: ${({ size = 16 }) => size / 10}rem;
   color: ${({ color = WHITE }) => color };
+  ${({ bold }) => bold && css`
+    font-weight: bold;
+  `}
 `;
 
-export default Text;
+export default class Text extends Component {
+  render () {
+    const { text, children, ...props } = this.props
+    return (
+      <TextWrapper {...props}>
+        { text || children }
+      </TextWrapper>
+    );
+  }
+}
