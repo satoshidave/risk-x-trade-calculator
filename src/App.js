@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Sidebar from './layout/Sidebar/Sidebar';
-import { Table, Text } from './components/common';
+import { Table, Text, Column } from './components/common';
+import { Add } from '@material-ui/icons';
 
 const BodyContainer = styled.div`
   margin: 2rem;
@@ -23,7 +24,11 @@ export default class App extends React.Component {
         <BodyContainer>
           <Table
             leftHeader={<Text text='LONG' bold />}
-            rightHeader={<Text text='+' bold align='right' />}
+            rightHeader={
+              <Column align='flex-end'>
+                <Add cursor='pointer' fontSize='large' />
+              </Column>
+            }
             columns={['Fecha', 'Precio', 'Posición', 'Stop', 'Pérdida']}
             body={['11/08/2019', '11.500', '0.1', '12.100', '20']}
           />
