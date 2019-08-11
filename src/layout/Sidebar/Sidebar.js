@@ -6,6 +6,7 @@ import { BLUE_GREEN } from '../../utils/colors';
 
 const SidebarContainer = styled.div`
   width: 30rem;
+  margin: 2rem;
 `
 
 const RangeComponent = styled.input.attrs({ type: 'range', min: '0', max: '4' })`
@@ -118,26 +119,68 @@ export default class Sidebar extends Component {
     this.setState({ collateral });
   }
 
-  accountBody = () => (
-    <>
-      <Row direction='column'>
-        <Text text='Mi colateral' />
-        <Input onChange={event => this.setCollateral(event)} />
-      </Row>
-      <Row direction='column' marginVertical={20}>
-        <Text text='% de R' />
-        <Range value={this.state.percentage} onChange={this.onChangeRange} />
-      </Row>
-      <Row>
-        <Column>
-          <Text text='R por trade' />
-        </Column>
-        <Column align='flex-end'>
-          <Text bold text={(this.state.collateral * (parseInt(this.state.percentage) + 1)) / 100} />
-        </Column>
-      </Row>
-    </>
-  )
+  accountBody = () => {
+    const { collateral, percentage } = this.state;
+    return (
+      <>
+        <Row direction='column'>
+          <Text text='Mi colateral' />
+          <Input onChange={event => this.setCollateral(event)} />
+        </Row>
+        <Row direction='column' marginVertical={20}>
+          <Text text='% de R' />
+          <Range value={percentage} onChange={this.onChangeRange} />
+        </Row>
+        <Row>
+          <Column flex={2}>
+            <Text text='R por trade' />
+          </Column>
+          <Column align='flex-end'>
+            <Text bold text={(collateral * (parseInt(percentage) + 1)) / 100} />
+          </Column>
+        </Row>
+      </>
+    )
+  }
+
+  totalsLong = () => {
+    return (
+      <>
+        <Row>
+          <Column flex={2}>
+            <Text text='Precio de compra' />
+          </Column>
+          <Column align='flex-end'>
+            <Text bold text='X' />
+          </Column>
+        </Row>
+        <Row>
+          <Column flex={2}>
+            <Text text='Posición' />
+          </Column>
+          <Column align='flex-end'>
+            <Text bold text='X' />
+          </Column>
+        </Row>
+        <Row>
+          <Column flex={2}>
+            <Text text='Stop' />
+          </Column>
+          <Column align='flex-end'>
+            <Text bold text='X' />
+          </Column>
+        </Row>
+        <Row>
+          <Column flex={2}>
+            <Text text='Pérdida en Stop' />
+          </Column>
+          <Column align='flex-end'>
+            <Text bold text='X' />
+          </Column>
+        </Row>
+      </>
+    )
+  }
 
   render () {
     return (
@@ -146,7 +189,11 @@ export default class Sidebar extends Component {
           header={<Text text='Mi cuenta' bold />}
           body={this.accountBody()}
         />
-        <Card />
+        <Card
+          header={<Text text='Totales LONG' bold />}
+          body={this.totalsLong()}
+          margin='2rem 0'
+        />
       </SidebarContainer>
     );
   }

@@ -14,7 +14,9 @@ const CardContainer = styled.div`
     0 0.1rem 0.1rem 0 rgba(0,0,0,.14),
     0 0.1rem 0.3rem 0 rgba(0,0,0,.12);
   border-radius: 0.4rem;
-  margin: 2rem;
+  ${({ margin }) => margin && css`
+    margin: ${margin};
+  `}
 `
 
 const CardHeaderContainer = styled.div`
@@ -49,7 +51,7 @@ export default class Card extends Component {
       body,
     } = this.props;
     return (
-      <CardContainer>
+      <CardContainer {...this.props}>
         <CardHeader
           leftHeader={leftHeader}
           rightHeader={rightHeader}

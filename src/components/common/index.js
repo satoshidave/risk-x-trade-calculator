@@ -2,6 +2,7 @@ import Card from './Card';
 import { Row, Column } from './Grid';
 import Text from './Text';
 import Input from './Input';
+import Table from './Table';
 
 export {
   Card,
@@ -9,4 +10,5 @@ export {
   Column,
   Text,
   Input,
+  Table,
 }

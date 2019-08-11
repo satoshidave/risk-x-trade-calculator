@@ -8,6 +8,9 @@ const TextWrapper = styled.span`
   ${({ bold }) => bold && css`
     font-weight: bold;
   `}
+  ${({ align }) => align && css`
+    text-align: ${ align };
+  `}
 `;
 
 export default class Text extends Component {
