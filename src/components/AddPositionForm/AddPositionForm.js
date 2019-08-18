@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { get } from 'lodash';
 import { Input, Button, Row, Column, Text } from '../common';
 import { addLong } from '../../actions/addLong';
@@ -59,7 +60,7 @@ class AddPositionForm extends Component {
           </Column>
         </Row>
         <Button margin='0.9rem 0 0 0' onClick={() => {
-          addLongPosition({ price, position, stop, loss });
+          addLongPosition({ date: moment().format('DD/MM/YYYY HH:mm'), price, position, stop, loss });
           onAddPosition();
         }}>Agregar posición</Button>
       </>

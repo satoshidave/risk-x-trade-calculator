@@ -59,7 +59,7 @@ export default class Table extends Component {
       columns,
       body,
     } = this.props;
-
+    console.log(body)
     return (
       <TableContainer>
         <TableHeader
@@ -71,13 +71,17 @@ export default class Table extends Component {
           <thead>
             <TR>
               {
-                map(columns, column => <TD><Text color={BLUE_GREEN} text={column} bold /></TD>)
+                map(columns, ({ value }) => <TD><Text color={BLUE_GREEN} text={value} bold /></TD>)
               }
             </TR>
           </thead>
           <tbody>
             {
-              map(body, item => <TD>{ item }</TD>)
+              map(body, item => (
+                <TR>
+                  { map(columns, ({ name }) => <TD><Text text={item[name]} /></TD>) }
+                </TR>
+              ))
             }
           </tbody>
         </TableWrapper>

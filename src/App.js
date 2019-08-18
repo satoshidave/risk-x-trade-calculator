@@ -7,6 +7,7 @@ import Sidebar from './layout/Sidebar/Sidebar';
 import { Table, Text, Column, Modal, Input, Row, Button } from './components/common';
 import { Add } from '@material-ui/icons';
 import AddPositionForm from './components/AddPositionForm/AddPositionForm';
+import LongPositions from './components/LongPositions/LongPositions';
 
 const BodyContainer = styled.div`
   margin: 2rem;
@@ -32,16 +33,7 @@ export default class App extends React.Component {
         <AppContainer>
           <Sidebar />
           <BodyContainer>
-            <Table
-              leftHeader={<Text text='LONG' bold />}
-              rightHeader={
-                <Column align='flex-end'>
-                  <Add onClick={this.toggleModal} cursor='pointer' fontSize='large' />
-                </Column>
-              }
-              columns={['Fecha', 'Precio', 'Posición', 'Stop', 'Pérdida']}
-              body={['11/08/2019', '11.500', '0.1', '12.100', '20']}
-            />
+            <LongPositions onClickAdd={this.toggleModal} />
           </BodyContainer>
           <Modal title='Agregar nueva posición LONG' visible={modalOpened} onClose={this.toggleModal}>
             <AddPositionForm onAddPosition={this.toggleModal} />

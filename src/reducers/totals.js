@@ -10,7 +10,7 @@ const totals = (state = INITIAL_STATE, action) => {
   case ADD_LONG:
     return {
       ...state,
-      longs: payload
+      longs: [...state.longs, payload]
     }
   default:
     return state;
