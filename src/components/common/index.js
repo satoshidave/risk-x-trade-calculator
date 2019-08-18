@@ -4,6 +4,7 @@ import Text from './Text';
 import Input from './Input';
 import Table from './Table';
 import Modal from './Modal';
+import Button from './Button';
 
 export {
   Card,
@@ -13,4 +14,5 @@ export {
   Input,
   Table,
   Modal,
+  Button,
 }

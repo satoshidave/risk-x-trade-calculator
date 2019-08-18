@@ -7,6 +7,7 @@ const VIOLET_BLUE = "#7100D9";
 const WHITE = "#FFFFFF";
 const BLACK = "#000000";
 const PALE_GREY = "#D6D6DF";
+const CORNFLOWER_BLUE = "#5841d8";
 
 export {
   ALMOST_BLACK,
@@ -18,4 +19,5 @@ export {
   WHITE,
   BLACK,
   PALE_GREY,
+  CORNFLOWER_BLUE,
 }

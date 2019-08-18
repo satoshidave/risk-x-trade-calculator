@@ -14,7 +14,7 @@ const InputComponent = styled.input`
 
 export default class Input extends Component {
   render() {
-    const { label } = this.props;
+    const { label, value, onChange } = this.props;
     return (
       <Row direction='column'>
         { label && (
@@ -23,7 +23,10 @@ export default class Input extends Component {
           </Row>
         ) }
         <Row>
-          <InputComponent />
+          <InputComponent
+            value={value}
+            onChange={onChange}
+          />
         </Row>
       </Row>
     );

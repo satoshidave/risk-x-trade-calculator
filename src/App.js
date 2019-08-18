@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { get } from 'lodash';
 import Sidebar from './layout/Sidebar/Sidebar';
-import { Table, Text, Column, Modal, Input, Row } from './components/common';
+import { Table, Text, Column, Modal, Input, Row, Button } from './components/common';
 import { Add } from '@material-ui/icons';
+import AddPositionForm from './components/AddPositionForm/AddPositionForm';
 
 const BodyContainer = styled.div`
   margin: 2rem;
@@ -39,9 +41,7 @@ export default class App extends React.Component {
           />
         </BodyContainer>
         <Modal title='Agregar nueva posición LONG' visible={modalOpened} onClose={this.toggleModal}>
-          <Input label='Precio' />
-          <Input label='Posición' />
-          <Input label='Stop' />
+          <AddPositionForm />
         </Modal>
       </AppContainer>
     )
