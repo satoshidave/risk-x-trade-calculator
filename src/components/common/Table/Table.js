@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { map } from 'lodash';
-import { DARK_GREY_2, DARK_GREY_1, BLUE_GREEN } from '../../../utils/colors';
+import { DARK_GREY_2, DARK_GREY_1, BLUE_GREEN, LIPSTICK_RED } from '../../../utils/colors';
 import { Row, Column } from '../Grid';
 import Text from '../Text';
 
@@ -51,7 +51,6 @@ const TD = styled.td`
 
 export default class Table extends Component {
   render() {
-
     const {
       leftHeader,
       rightHeader,
@@ -59,6 +58,7 @@ export default class Table extends Component {
       columns,
       body,
     } = this.props;
+    const dataExists = typeof body === 'object' && body.length > 0;
     console.log(body)
     return (
       <TableContainer>
@@ -77,7 +77,7 @@ export default class Table extends Component {
           </thead>
           <tbody>
             {
-              map(body, item => (
+              dataExists && map(body, item => (
                 <TR>
                   { map(columns, ({ name }) => <TD><Text text={item[name]} /></TD>) }
                 </TR>
@@ -85,6 +85,11 @@ export default class Table extends Component {
             }
           </tbody>
         </TableWrapper>
+        { !dataExists && (
+          <Row margin='20px' justify='center'>
+            <Text text='Actualmente no tienes posiciones LONG abiertas' color={LIPSTICK_RED} />
+          </Row>
+        ) }
       </TableContainer>
     )
   }
