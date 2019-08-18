@@ -1,7 +1,10 @@
+import React, { Component } from 'react'
 import styled from 'styled-components';
 import { PALE_GREY } from '../../../utils/colors';
+import { Row } from '../Grid';
+import Text from '../Text';
 
-const Input = styled.input`
+const InputComponent = styled.input`
   height: 4.7rem;
   background-color: ${ PALE_GREY };
   width: 100%;
@@ -9,4 +12,20 @@ const Input = styled.input`
   padding: 1rem;
 `;
 
-export default Input;
+export default class Input extends Component {
+  render() {
+    const { label } = this.props;
+    return (
+      <Row direction='column'>
+        { label && (
+          <Row>
+            <Text text={label} />
+          </Row>
+        ) }
+        <Row>
+          <InputComponent />
+        </Row>
+      </Row>
+    );
+  }
+}

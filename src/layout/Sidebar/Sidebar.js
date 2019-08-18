@@ -124,8 +124,7 @@ export default class Sidebar extends Component {
     return (
       <>
         <Row direction='column'>
-          <Text text='Mi colateral' />
-          <Input onChange={event => this.setCollateral(event)} />
+          <Input label='Mi colateral' onChange={event => this.setCollateral(event)} />
         </Row>
         <Row direction='column' marginVertical={20}>
           <Text text='% de R' />
