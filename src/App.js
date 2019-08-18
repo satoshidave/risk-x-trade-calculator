@@ -44,7 +44,7 @@ export default class App extends React.Component {
             />
           </BodyContainer>
           <Modal title='Agregar nueva posición LONG' visible={modalOpened} onClose={this.toggleModal}>
-            <AddPositionForm />
+            <AddPositionForm onAddPosition={this.toggleModal} />
           </Modal>
         </AppContainer>
       </Provider>

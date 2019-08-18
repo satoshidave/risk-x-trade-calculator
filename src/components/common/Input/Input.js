@@ -24,6 +24,7 @@ export default class Input extends Component {
         ) }
         <Row>
           <InputComponent
+            type='number'
             value={value}
             onChange={onChange}
           />
