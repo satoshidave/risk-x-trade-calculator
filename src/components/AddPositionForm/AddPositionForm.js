@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { Input, Button } from '../common';
+import { addLong } from '../../actions/addLong';
 
-export default class AddPositionForm extends Component {
+class AddPositionForm extends Component {
   state = {
     price: null,
     position: null,
@@ -11,6 +13,8 @@ export default class AddPositionForm extends Component {
 
   render() {
     const { price, position, stop } = this.state;
+    const { addLongPosition, totals } = this.props;
+    console.log(totals)
     return (
       <>
         <Input
@@ -28,8 +32,20 @@ export default class AddPositionForm extends Component {
           value={stop}
           onChange={event => this.setState({ stop: get(event, 'target.value', 0) })}
         />
-        <Button margin='0.9rem 0 0 0'>Agregar posición</Button>
+        <Button margin='0.9rem 0 0 0' onClick={() => addLongPosition({ price, position, stop })}>Agregar posición</Button>
       </>
     )
   }
 }
+
+const mapStateToProps = ({ totals }) => ({
+  totals,
+});
+
+const mapDispatchToProps = dispatch => ({
+  addLongPosition(position) {
+    dispatch(addLong(position))
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddPositionForm);
