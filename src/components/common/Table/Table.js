@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import { map } from 'lodash';
-import { DARK_GREY_2, DARK_GREY_1, BLUE_GREEN, LIPSTICK_RED } from '../../../utils/colors';
+import { DARK_GREY_2, DARK_GREY_1, BLUE_GREEN } from '../../../utils/colors';
 import { Row, Column } from '../Grid';
 import Text from '../Text';
 
@@ -13,6 +13,9 @@ const TableContainer = styled.div`
     0 0.1rem 0.1rem 0 rgba(0,0,0,.14),
     0 0.1rem 0.3rem 0 rgba(0,0,0,.12);
   border-radius: 0.4rem;
+  ${({ margin }) => margin && css`
+    margin: ${margin};
+  `}
 `
 const TableHeaderContainer = styled.div`
   background-color: ${ DARK_GREY_1 };
@@ -57,11 +60,13 @@ export default class Table extends Component {
       header,
       columns,
       body,
+      onEmptyComponent,
+      ...props
     } = this.props;
     const dataExists = typeof body === 'object' && body.length > 0;
     console.log(body)
     return (
-      <TableContainer>
+      <TableContainer {...props}>
         <TableHeader
           leftHeader={leftHeader}
           rightHeader={rightHeader}
@@ -70,26 +75,24 @@ export default class Table extends Component {
         <TableWrapper>
           <thead>
             <TR>
-              {
-                map(columns, ({ value }) => <TD><Text color={BLUE_GREEN} text={value} bold /></TD>)
-              }
+              { map(columns, ({ value }, index) => (
+                <TD key={`thead-${index}`}>
+                  <Text color={BLUE_GREEN} text={value} bold />
+                </TD>
+              )) }
             </TR>
           </thead>
           <tbody>
             {
-              dataExists && map(body, item => (
-                <TR>
-                  { map(columns, ({ name }) => <TD><Text text={item[name]} /></TD>) }
+              dataExists && map(body, (item, index) => (
+                <TR key={index}>
+                  { map(columns, ({ name }, index) => <TD key={index}>{ item[name] }</TD>) }
                 </TR>
               ))
             }
           </tbody>
         </TableWrapper>
-        { !dataExists && (
-          <Row margin='20px' justify='center'>
-            <Text text='Actualmente no tienes posiciones LONG abiertas' color={LIPSTICK_RED} />
-          </Row>
-        ) }
+        { !dataExists && onEmptyComponent }
       </TableContainer>
     )
   }

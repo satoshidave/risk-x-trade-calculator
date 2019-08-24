@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import uuid from 'uuid/v4';
 import moment from 'moment';
 import { get } from 'lodash';
 import { Input, Button, Row, Column, Text } from '../common';
-import { addLong } from '../../actions/addLong';
+import { addPosition } from '../../actions/addLong';
+import { ADD_LONG, ADD_SHORT } from '../../utils/types';
 
 class AddPositionForm extends Component {
   state = {
@@ -19,22 +21,22 @@ class AddPositionForm extends Component {
     const position = parseFloat((quantity / price)).toFixed(8);
     this.setState({
       position,
-      loss: parseFloat((price - stop) * position).toFixed(2)
+      loss: Math.abs(parseFloat((price - stop) * position).toFixed(2)),
     })
   }
 
   render() {
     const { price, quantity, stop, position, loss } = this.state;
-    const { addLongPosition, onAddPosition } = this.props;
+    const { addNewPosition, onAddPosition, modalType } = this.props;
     return (
       <>
         <Input
-          label='Precio de compra'
+          label={`${modalType === 'LONG' ? 'Buy' : 'Sell'} price`}
           value={price}
           onChange={event => this.setState({ price: get(event, 'target.value', 0) }, this.calcPosition)}
         />
         <Input
-          label='Cantidad'
+          label='Quantity'
           value={quantity}
           onChange={event => this.setState({ quantity: get(event, 'target.value', 0) }, this.calcPosition)}
         />
@@ -45,7 +47,7 @@ class AddPositionForm extends Component {
         />
         <Row marginTop={20}>
           <Column>
-            <Text text='Posición' />
+            <Text text='Position' />
           </Column>
           <Column align='flex-end'>
             <Text text={position || 0} />
@@ -53,25 +55,33 @@ class AddPositionForm extends Component {
         </Row>
         <Row marginTop={20}>
           <Column>
-            <Text text='Pérdida en Stop' />
+            <Text text='Stop Loss' />
           </Column>
           <Column align='flex-end'>
             <Text text={loss || 0} />
           </Column>
         </Row>
         <Button margin='0.9rem 0 0 0' onClick={() => {
-          addLongPosition({ date: moment().format('DD/MM/YYYY HH:mm'), price, position, stop, loss });
+          addNewPosition(modalType, {
+            id: uuid(),
+            date: moment().format('DD/MM/YYYY HH:mm'),
+            price,
+            position,
+            stop,
+            loss,
+          });
           onAddPosition();
-        }}>Agregar posición</Button>
+        }}>Add Position</Button>
       </>
     )
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  addLongPosition(position) {
-    dispatch(addLong(position))
-  },
+  addNewPosition(modalType, position) {
+    const type = modalType === 'LONG' ? ADD_LONG : ADD_SHORT;
+    dispatch(addPosition(type, position))
+  }
 });
 
 export default connect(null, mapDispatchToProps)(AddPositionForm);

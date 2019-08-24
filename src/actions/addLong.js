@@ -1,7 +1,5 @@
-import { ADD_LONG } from '../utils/types';
-
-const addLong = (position) => dispatch => dispatch({ type: ADD_LONG, payload: position })
+const addPosition = (type, position) => dispatch => dispatch({ type, payload: position })
 
 export {
-  addLong,
+  addPosition,
 }

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Clear } from '@material-ui/icons';
-import { WHITE, DARK_GREY_2, ALMOST_BLACK, DARK_GREY_1, BLUE_GREEN } from '../../../utils/colors';
+import { DARK_GREY_2, DARK_GREY_1, BLUE_GREEN } from '../../../utils/colors';
 import Text from '../Text';
-import { Row } from '../Grid';
 
 const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
