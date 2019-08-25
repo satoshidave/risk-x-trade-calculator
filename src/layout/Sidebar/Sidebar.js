@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { map, times, get } from 'lodash'
+import { map, times, get, sumBy, size, each } from 'lodash';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Card, Row, Text, Input, Column } from '../../components/common';
 import { BLUE_GREEN } from '../../utils/colors';
@@ -103,7 +104,7 @@ class Range extends Component {
   }
 }
 
-export default class Sidebar extends Component {
+class Sidebar extends Component {
   state = {
     collateral: 0,
     percentage: 0,
@@ -124,15 +125,15 @@ export default class Sidebar extends Component {
     return (
       <>
         <Row direction='column'>
-          <Input label='Mi colateral' onChange={event => this.setCollateral(event)} />
+          <Input label='My collateral' onChange={event => this.setCollateral(event)} />
         </Row>
         <Row direction='column' marginVertical={20}>
-          <Text text='% de R' />
+          <Text text='R%' />
           <Range value={percentage} onChange={this.onChangeRange} />
         </Row>
         <Row>
           <Column flex={2}>
-            <Text text='R por trade' />
+            <Text text='R daily' />
           </Column>
           <Column align='flex-end'>
             <Text bold text={(collateral * (parseInt(percentage) + 1)) / 100} />
@@ -143,22 +144,33 @@ export default class Sidebar extends Component {
   }
 
   totalsLong = () => {
+    const { longs } = this.props;
+    const sumByPosition = sumBy(longs, ({ position }) => parseFloat(position));
+    const sumByLoss = sumBy(longs, ({ loss }) => parseInt(loss));
+    let buyPrice = 0;
+    let stopPrice = 0;
+    each(longs, ({ price, position, loss, stop }) => {
+      console.log(loss, parseInt(loss), parseFloat(loss))
+      buyPrice = parseInt(buyPrice + ((parseFloat(position) / sumByPosition) * parseInt(price)));
+      stopPrice = parseInt(stopPrice + ((parseInt(loss) / sumByLoss) * parseInt(stop)))
+    });
+    console.log(stopPrice)
     return (
       <>
         <Row>
           <Column flex={2}>
-            <Text text='Precio de compra' />
+            <Text text='Buy price' />
           </Column>
           <Column align='flex-end'>
-            <Text bold text='X' />
+            <Text bold text={buyPrice.toString()} />
           </Column>
         </Row>
         <Row>
           <Column flex={2}>
-            <Text text='Posición' />
+            <Text text='Position' />
           </Column>
           <Column align='flex-end'>
-            <Text bold text='X' />
+            <Text bold text={sumByPosition.toString()} />
           </Column>
         </Row>
         <Row>
@@ -166,15 +178,15 @@ export default class Sidebar extends Component {
             <Text text='Stop' />
           </Column>
           <Column align='flex-end'>
-            <Text bold text='X' />
+            <Text bold text={stopPrice.toString()} />
           </Column>
         </Row>
         <Row>
           <Column flex={2}>
-            <Text text='Pérdida en Stop' />
+            <Text text='Stop Loss' />
           </Column>
           <Column align='flex-end'>
-            <Text bold text='X' />
+            <Text bold text={sumByLoss} />
           </Column>
         </Row>
       </>
@@ -185,11 +197,16 @@ export default class Sidebar extends Component {
     return (
       <SidebarContainer>
         <Card
-          header={<Text text='Mi cuenta' bold />}
+          header={<Text text='My account' bold />}
           body={this.accountBody()}
         />
         <Card
-          header={<Text text='Totales LONG' bold />}
+          header={<Text text='LONG Totals' bold />}
+          body={this.totalsLong()}
+          margin='2rem 0'
+        />
+        <Card
+          header={<Text text='SHORT Totals' bold />}
           body={this.totalsLong()}
           margin='2rem 0'
         />
@@ -197,3 +214,10 @@ export default class Sidebar extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ totals }) => ({
+  longs: get(totals, 'longs', []),
+  shorts: get(totals, 'shorts', []),
+});
+
+export default connect(mapStateToProps)(Sidebar);
