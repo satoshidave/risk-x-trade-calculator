@@ -1,10 +1,11 @@
-import { ADD_LONG, ADD_SHORT, REMOVE_LONG, REMOVE_SHORT, COLLATERAL } from '../utils/types';
+import { ADD_LONG, ADD_SHORT, REMOVE_LONG, REMOVE_SHORT, COLLATERAL, PERCENTAGE } from '../utils/types';
 import { filter } from 'lodash';
 
 const INITIAL_STATE = {
   longs: [],
   shorts: [],
   collateral: 0,
+  percentage: 1,
 }
 
 const totals = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,11 @@ const totals = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       collateral: payload,
+    }
+  case PERCENTAGE:
+    return {
+      ...state,
+      percentage: payload,
     }
   case ADD_LONG:
     return {

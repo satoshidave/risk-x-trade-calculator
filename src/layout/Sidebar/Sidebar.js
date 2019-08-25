@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Card, Row, Text, Input, Column } from '../../components/common';
 import { BLUE_GREEN } from '../../utils/colors';
-import { updateCollateral } from '../../actions/addLong';
+import { updateCollateral, updatePercentage } from '../../actions/addLong';
 
 const SidebarContainer = styled.div`
   width: 30rem;
@@ -106,13 +106,11 @@ class Range extends Component {
 }
 
 class Sidebar extends Component {
-  state = {
-    percentage: 0,
-  }
 
   onChangeRange = (event) => {
+    const { onUpdatePercentage } = this.props;
     const percentage = get(event, 'target.value', 0);
-    this.setState({ percentage });
+    onUpdatePercentage(percentage);
   }
 
   setCollateral = (event) => {
@@ -122,8 +120,7 @@ class Sidebar extends Component {
   }
 
   accountBody = () => {
-    const { percentage } = this.state;
-    const { collateral } = this.props;
+    const { collateral, percentage } = this.props;
     return (
       <>
         <Row direction='column'>
@@ -220,11 +217,15 @@ const mapStateToProps = ({ totals }) => ({
   longs: get(totals, 'longs', []),
   shorts: get(totals, 'shorts', []),
   collateral: get(totals, 'collateral', 0),
+  percentage: get(totals, 'percentage', 0),
 });
 
 const mapDispatchToProps = dispatch => ({
   onUpdateCollateral(collateral) {
     dispatch(updateCollateral(collateral));
+  },
+  onUpdatePercentage(percentage) {
+    dispatch(updatePercentage(percentage));
   },
 });
 
