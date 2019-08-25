@@ -64,7 +64,6 @@ export default class Table extends Component {
       ...props
     } = this.props;
     const dataExists = typeof body === 'object' && body.length > 0;
-    console.log(body)
     return (
       <TableContainer {...props}>
         <TableHeader

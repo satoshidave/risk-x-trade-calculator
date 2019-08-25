@@ -15,7 +15,6 @@ const columns = [
 class LongPositions extends Component {
   render() {
     const { longs, onClickAdd } = this.props;
-    console.log(longs)
     return (
       <Table
         leftHeader={<Text text='LONG' bold />}

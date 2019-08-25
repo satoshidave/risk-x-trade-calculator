@@ -37,7 +37,6 @@ class PositionTable extends Component {
     const body = map(data, item => {
       return { ...item, actions: this.positionActions(get(item, 'id', null)) }
     })
-    console.log(body)
     return (
       <Table
         {...props}

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Card, Row, Text, Input, Column } from '../../components/common';
 import { BLUE_GREEN } from '../../utils/colors';
+import { updateCollateral } from '../../actions/addLong';
 
 const SidebarContainer = styled.div`
   width: 30rem;
@@ -106,7 +107,6 @@ class Range extends Component {
 
 class Sidebar extends Component {
   state = {
-    collateral: 0,
     percentage: 0,
   }
 
@@ -116,16 +116,18 @@ class Sidebar extends Component {
   }
 
   setCollateral = (event) => {
+    const { onUpdateCollateral } = this.props;
     const collateral = parseInt(get(event, 'target.value', 0));
-    this.setState({ collateral });
+    onUpdateCollateral(collateral);
   }
 
   accountBody = () => {
-    const { collateral, percentage } = this.state;
+    const { percentage } = this.state;
+    const { collateral } = this.props;
     return (
       <>
         <Row direction='column'>
-          <Input label='My collateral' onChange={event => this.setCollateral(event)} />
+          <Input label='My collateral' value={collateral} onChange={event => this.setCollateral(event)} />
         </Row>
         <Row direction='column' marginVertical={20}>
           <Text text='R%' />
@@ -143,18 +145,17 @@ class Sidebar extends Component {
     )
   }
 
-  totalsLong = () => {
-    const { longs } = this.props;
-    const sumByPosition = sumBy(longs, ({ position }) => parseFloat(position));
-    const sumByLoss = sumBy(longs, ({ loss }) => parseInt(loss));
+  totalsLong = (type) => {
+    const { longs, shorts } = this.props;
+    const data = type === 'LONG' ? longs : shorts;
+    const sumByPosition = sumBy(data, ({ position }) => parseFloat(position));
+    const sumByLoss = sumBy(data, ({ loss }) => parseInt(loss));
     let buyPrice = 0;
     let stopPrice = 0;
-    each(longs, ({ price, position, loss, stop }) => {
-      console.log(loss, parseInt(loss), parseFloat(loss))
+    each(data, ({ price, position, loss, stop }) => {
       buyPrice = parseInt(buyPrice + ((parseFloat(position) / sumByPosition) * parseInt(price)));
       stopPrice = parseInt(stopPrice + ((parseInt(loss) / sumByLoss) * parseInt(stop)))
     });
-    console.log(stopPrice)
     return (
       <>
         <Row>
@@ -186,7 +187,7 @@ class Sidebar extends Component {
             <Text text='Stop Loss' />
           </Column>
           <Column align='flex-end'>
-            <Text bold text={sumByLoss} />
+            <Text bold text={sumByLoss.toString()} />
           </Column>
         </Row>
       </>
@@ -202,12 +203,12 @@ class Sidebar extends Component {
         />
         <Card
           header={<Text text='LONG Totals' bold />}
-          body={this.totalsLong()}
+          body={this.totalsLong('LONG')}
           margin='2rem 0'
         />
         <Card
           header={<Text text='SHORT Totals' bold />}
-          body={this.totalsLong()}
+          body={this.totalsLong('SHORT')}
           margin='2rem 0'
         />
       </SidebarContainer>
@@ -218,6 +219,13 @@ class Sidebar extends Component {
 const mapStateToProps = ({ totals }) => ({
   longs: get(totals, 'longs', []),
   shorts: get(totals, 'shorts', []),
+  collateral: get(totals, 'collateral', 0),
 });
 
-export default connect(mapStateToProps)(Sidebar);
+const mapDispatchToProps = dispatch => ({
+  onUpdateCollateral(collateral) {
+    dispatch(updateCollateral(collateral));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
